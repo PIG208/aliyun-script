@@ -3,13 +3,16 @@ import argparse
 from backend.lib.instances import EcsStatus
 from backend.lib.actions import shutdown_ecs, start_ecs
 from backend.lib.utils import get_client_config_and_ecs, get_print, wait_ecs_status
-from backend.tools.eip_tool import load_config_and_unbind_allocate_and_bind_new_eip
+from backend.tools.eip_tool import (
+    load_config_and_unbind_allocate_and_bind_new_eip,
+    unbind_release,
+)
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Manage the ecs using aliyun API")
 
-    signals = ["stop", "start", "rebind", "ip", "status"]
+    signals = ["stop", "start", "rebind", "ip", "status", "release"]
     parser.add_argument(
         "-s",
         "--signal",
@@ -67,3 +70,5 @@ if __name__ == "__main__":
             _print("No eip binded")
     elif args.signal == "status":
         _print(f"The status of {ecs.InstanceId} ({ecs.InstanceName}) is:\n{ecs.Status}")
+    elif args.signal == "release":
+        unbind_release(client, ecs, True, args.verbose, args.quiet)

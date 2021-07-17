@@ -1,6 +1,6 @@
 import argparse
 from dataclasses import asdict
-from typing import Optional
+from typing import Callable, Optional
 
 from aliyunsdkcore.client import AcsClient
 
@@ -14,6 +14,36 @@ from backend.lib.actions import (
 from backend.lib.exceptions import UnbindFailureError
 from backend.lib.instances import EcsInstance, EipConfiguration, EipStatus
 from backend.lib.utils import p, wait_eip_status, get_client_config_and_ecs, get_print
+
+
+def unbind_release(
+    client: AcsClient,
+    target_ecs: EcsInstance,
+    release_old_eip: bool,
+    verbose: bool,
+    quiet: bool,
+):
+    _print = get_print(quiet)
+    try:
+        _print("+ Trying to unbind currently binded eip")
+        eip = unbind_eip_from_ecs(client, target_ecs)
+        wait_eip_status(
+            client,
+            eip,
+            EipStatus.available,
+            target_ecs.RegionId,
+            lambda: _print("Waiting for the eip to be unbinded..."),
+        )
+        _print("Successfully unbinded the eip")
+        p(verbose, asdict(eip))
+        if release_old_eip:
+            _print("+ Trying to release the unbinded eip")
+            release_eip(client, eip)
+            _print("Successfully relased the eip")
+        else:
+            _print("Not going to release the old eip by configuration")
+    except UnbindFailureError:
+        _print("No eip to be unbinded, continuing...")
 
 
 def unbind_allocate_and_bind_new_eip(
@@ -48,26 +78,7 @@ def unbind_allocate_and_bind_new_eip(
         p(verbose, new_eip)
 
     # If there is an eip currently binded, we unbind it first
-    try:
-        _print("+ Trying to unbind currently binded eip")
-        eip = unbind_eip_from_ecs(client, target_ecs)
-        wait_eip_status(
-            client,
-            eip,
-            EipStatus.available,
-            target_ecs.RegionId,
-            lambda: _print("Waiting for the eip to be unbinded..."),
-        )
-        _print("Successfully unbinded the eip")
-        p(verbose, asdict(eip))
-        if release_old_eip:
-            _print("+ Trying to release the unbinded eip")
-            release_eip(client, eip)
-            _print("Successfully relased the eip")
-        else:
-            _print("Not going to release the old eip by configuration")
-    except UnbindFailureError:
-        _print("No eip to be unbinded, continuing...")
+    unbind_release(client, target_ecs, release_old_eip, verbose, quiet)
 
     _print("+ Trying to bind the new eip")
     bind_eip_to_ecs(client, new_eip, target_ecs)
