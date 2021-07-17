@@ -1,0 +1,7 @@
+{
+  "Target": "i-1ijonfi1n3f1i3example",
+  "InstanceChargeType": "PostPaid",
+  "InternetChargeType": "PayByTraffic",
+  "BandWidth": 5,
+  "ISP": "BGP_PRO"
+}
