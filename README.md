@@ -8,9 +8,19 @@
 
 ### 环境准备
 
+- Windows
+
 ```
 virtualenv aliyun
-source aliyun/Scripts/activavte
+aliyun\Scripts\activate.bat
+pip install -r requirements.txt
+```
+
+- Linux
+
+```
+virtualenv aliyun
+source aliyun/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -28,14 +38,26 @@ pip install -r requirements.txt
 - ip: ECS 目前的公网 IP
 - status: ECS 目前的状态
 
+效果:
+
+```
+(aliyun) pig208@PIG:$ python -m backend.ecs_tool -s status
+The status of i-asdasdasdasdasdasd (pig208-server) is:
+Running
+(aliyun) pig208@PIG:$ python -m backend.ecs_tool -s ip
+The ip of i-asdasdasdasdasdasd (pig208-server) is:
+47.123.123.123
+```
+
 ## 配置
 
 配置通过两个.json 文件管理:
 
 - config.json
+
   "Target" 为需要进行操作的 ECS 的 InstanceId;
 
-  相关: [弹性公网 IP](<(https://help.aliyun.com/document_detail/36016.htm?spm=a2c4g.11186623.2.2.27b829c6x47dDY#doc-api-Vpc-AllocateEipAddress)>)
+  相关: [弹性公网 IP](https://help.aliyun.com/document_detail/36016.htm?spm=a2c4g.11186623.2.2.27b829c6x47dDY#doc-api-Vpc-AllocateEipAddress)
 
 ```
 {
