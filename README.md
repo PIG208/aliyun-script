@@ -8,12 +8,16 @@
 
 ### 环境准备
 
-- Windows
-
 ```
 git clone https://github.com/PIG208/aliyun-script.git
 cd aliyun-script
 pip install .
+```
+
+只需要使用脚本的话可以直接通过 git 安装:
+
+```
+pip install -e git+https://github.com/PIG208/aliyun-script.git#egg=aliyun-scripts
 ```
 
 ### 使用方法
