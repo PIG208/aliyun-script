@@ -1,13 +1,15 @@
-from enum import Enum
 import json
+import os
 import pprint
+from enum import Enum
 from time import sleep
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from aliyunsdkcore.client import AcsClient
 
-from backend.lib.instances import EcsInstance, EipInstance, EipStatus, EcsStatus
+from aliyun_scripts.lib.instances import EcsInstance, EcsStatus, EipInstance, EipStatus
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
 pp = pprint.PrettyPrinter(indent=4)
 
 
@@ -34,7 +36,7 @@ def get_client_and_config() -> Tuple[AcsClient, dict]:
 
 
 def get_client_config_and_ecs() -> Tuple[AcsClient, dict, Optional[EcsInstance]]:
-    from backend.lib.actions import get_available_ecs
+    from aliyun_scripts.lib.actions import get_available_ecs
 
     client, config = get_client_and_config()
     ecs_list = get_available_ecs(client, config["Target"])
@@ -74,7 +76,7 @@ def wait_eip_status(
     if eip.AllocationId is None:
         raise ValueError("The eip address needs to have an allocationId")
 
-    from backend.lib.actions import get_available_eip
+    from aliyun_scripts.lib.actions import get_available_eip
 
     def get_func(status: EipInstance) -> List[EipInstance]:
         return get_available_eip(client, status, region_id, eip)
@@ -93,7 +95,7 @@ def wait_ecs_status(
     instance_id = ecs.InstanceId if isinstance(ecs, EcsInstance) else ecs
     if instance_id is None:
         raise ValueError("The InstanceId cannot be None")
-    from backend.lib.actions import get_available_ecs
+    from aliyun_scripts.lib.actions import get_available_ecs
 
     def get_func(status: EipInstance) -> List[EcsInstance]:
         return get_available_ecs(client, instance_id, status)

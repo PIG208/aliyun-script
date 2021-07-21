@@ -4,16 +4,21 @@ from typing import Callable, Optional
 
 from aliyunsdkcore.client import AcsClient
 
-from backend.lib.actions import (
+from aliyun_scripts.lib.actions import (
     allocate_eip,
     bind_eip_to_ecs,
     get_available_eip,
     release_eip,
     unbind_eip_from_ecs,
 )
-from backend.lib.exceptions import UnbindFailureError
-from backend.lib.instances import EcsInstance, EipConfiguration, EipStatus
-from backend.lib.utils import p, wait_eip_status, get_client_config_and_ecs, get_print
+from aliyun_scripts.lib.exceptions import UnbindFailureError
+from aliyun_scripts.lib.instances import EcsInstance, EipConfiguration, EipStatus
+from aliyun_scripts.lib.utils import (
+    get_client_config_and_ecs,
+    get_print,
+    p,
+    wait_eip_status,
+)
 
 
 def unbind_release(
@@ -139,8 +144,12 @@ def load_config_and_unbind_allocate_and_bind_new_eip(
     )
 
 
-if __name__ == "__main__":
+def main():
     args = parse_args()
     load_config_and_unbind_allocate_and_bind_new_eip(
         args.verbose, args.quiet, True, True
     )
+
+
+if __name__ == "__main__":
+    main()

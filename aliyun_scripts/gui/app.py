@@ -1,7 +1,8 @@
 import tkinter as tk
-from backend.lib.utils import get_client_config_and_ecs
-from backend.lib.actions import shutdown_ecs, start_ecs
-from backend.tools.eip_tool import (
+
+from aliyun_scripts.lib.actions import shutdown_ecs, start_ecs
+from aliyun_scripts.lib.utils import get_client_config_and_ecs
+from aliyun_scripts.tools.eip_tool import (
     load_config_and_unbind_allocate_and_bind_new_eip,
     release_eip,
     unbind_release,
@@ -58,7 +59,6 @@ class Application(tk.Frame):
         self.status_text.pack(side="top")
 
         self.quit = tk.Button(self, text="QUIT", fg="red", command=self.master.destroy)
-        self.quit.pack(side="top")
 
     def update_text(self):
         status = f"""
@@ -75,6 +75,11 @@ Status: {self.ecs.Status}
         self.update_text()
 
 
-root = tk.Tk()
-app = Application(master=root)
-app.mainloop()
+def main():
+    root = tk.Tk()
+    app = Application(master=root)
+    app.mainloop()
+
+
+if __name__ == "__main__":
+    main()

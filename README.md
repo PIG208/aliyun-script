@@ -11,23 +11,17 @@
 - Windows
 
 ```
-virtualenv aliyun
-aliyun\Scripts\activate.bat
-pip install -r requirements.txt
-```
-
-- Linux
-
-```
-virtualenv aliyun
-source aliyun/bin/activate
-pip install -r requirements.txt
+git clone https://github.com/PIG208/aliyun-script.git
+cd aliyun-script
+pip install .
 ```
 
 ### 使用方法
 
+由于暂时不支持指定配置文件路径，请在 secrets.json 和 config.json 的同一目录下执行脚本
+
 ```
-(aliyun) pig208@PIG:$ python -m backend.ecs_tool -s [指令|command]
+(aliyun) pig208@PIG:$ aliyun-ecs -s [指令|command]
 ```
 
 目前支持的指令如下:
@@ -41,10 +35,10 @@ pip install -r requirements.txt
 效果:
 
 ```
-(aliyun) pig208@PIG:$ python -m backend.ecs_tool -s status
+(aliyun) pig208@PIG:$ aliyun-ecs -s status
 The status of i-asdasdasdasdasdasd (pig208-server) is:
 Running
-(aliyun) pig208@PIG:$ python -m backend.ecs_tool -s ip
+(aliyun) pig208@PIG:$ aliyun-ecs -s ip
 The ip of i-asdasdasdasdasdasd (pig208-server) is:
 47.123.123.123
 ```

@@ -12,8 +12,8 @@ from aliyunsdkecs.request.v20140526.AssociateEipAddressRequest import (
 from aliyunsdkecs.request.v20140526.DescribeInstancesRequest import (
     DescribeInstancesRequest,
 )
-from aliyunsdkecs.request.v20140526.StopInstanceRequest import StopInstanceRequest
 from aliyunsdkecs.request.v20140526.StartInstanceRequest import StartInstanceRequest
+from aliyunsdkecs.request.v20140526.StopInstanceRequest import StopInstanceRequest
 from aliyunsdkecs.request.v20140526.UnassociateEipAddressRequest import (
     UnassociateEipAddressRequest,
 )
@@ -25,15 +25,15 @@ from aliyunsdkvpc.request.v20160428.ReleaseEipAddressRequest import (
 )
 from typing_extensions import Literal
 
-from backend.lib.exceptions import AllocationFailureError, UnbindFailureError
-from backend.lib.instances import (
+from aliyun_scripts.lib.exceptions import AllocationFailureError, UnbindFailureError
+from aliyun_scripts.lib.instances import (
     EcsInstance,
+    EcsStatus,
     EipConfiguration,
     EipInstance,
     EipStatus,
-    EcsStatus,
 )
-from backend.lib.utils import acs_req, p
+from aliyun_scripts.lib.utils import acs_req, p
 
 
 def bind_eip_to_ecs(client: AcsClient, eip: EipInstance, ecs: EcsInstance) -> str:
@@ -142,7 +142,7 @@ def allocate_eip(
     )
     try:
         return EipInstance(
-            IpAddress=result["InternetChargeType"], AllocationId=result["AllocationId"]
+            IpAddress=result["EipAddress"], AllocationId=result["AllocationId"]
         )
     except KeyError:
         p(verbose, result)
