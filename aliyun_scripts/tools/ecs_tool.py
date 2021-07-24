@@ -46,6 +46,10 @@ def main():
 
     client, _, ecs = get_client_config_and_ecs()
 
+    if ecs is None:
+        print("The requested ecs does not exist")
+        exit(1)
+
     if args.signal == "stop":
         _print("+ Shutting down the ecs")
         shutdown_ecs(client, ecs, "StopCharging")
