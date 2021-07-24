@@ -11,11 +11,22 @@ from aliyun_scripts.lib.instances import EcsInstance, EcsStatus, EipInstance, Ei
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 pp = pprint.PrettyPrinter(indent=4)
+SECRETS = os.path.expanduser("~/secrets.json")
+CONFIG = os.path.expanduser("~/config.json")
 
 
 def p(verbose, *args, **kwargs):
     if verbose:
         pp.pprint(*args, **kwargs)
+
+
+def update_config(secrets: Optional[str], config: Optional[str]) -> None:
+    global SECRETS, CONFIG
+
+    if secrets is not None:
+        SECRETS = secrets
+    if config is not None:
+        CONFIG = config
 
 
 def acs_req(client: AcsClient, r: Any, params: Dict[str, Any] = {}) -> dict:
@@ -25,13 +36,13 @@ def acs_req(client: AcsClient, r: Any, params: Dict[str, Any] = {}) -> dict:
 
 
 def get_client_and_config() -> Tuple[AcsClient, dict]:
-    access_info = json.load(open("secrets.json"))
+    access_info = json.load(open(SECRETS))
+    config = json.load(open(CONFIG))
     client = AcsClient(
         ak=access_info["accessKey_id"],
         secret=access_info["accessKey_secret"],
         region_id=access_info["region_id"],
     )
-    config = json.load(open("config.json"))
     return client, config
 
 

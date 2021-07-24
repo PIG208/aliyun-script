@@ -17,6 +17,7 @@ from aliyun_scripts.lib.utils import (
     get_client_config_and_ecs,
     get_print,
     p,
+    update_config,
     wait_eip_status,
 )
 
@@ -109,6 +110,10 @@ def parse_args():
 
     parser.add_argument("--quiet", "-q", action="store_true", help="Disable output")
 
+    parser.add_argument("--config", "-c")
+
+    parser.add_argument("--secrets", "-s")
+
     return parser.parse_args()
 
 
@@ -146,6 +151,9 @@ def load_config_and_unbind_allocate_and_bind_new_eip(
 
 def main():
     args = parse_args()
+
+    update_config(args.secrets, args.config)
+
     load_config_and_unbind_allocate_and_bind_new_eip(
         args.verbose, args.quiet, True, True
     )

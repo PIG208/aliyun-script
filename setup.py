@@ -1,8 +1,8 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 setup(
     name="aliyun-scripts",
-    version="1.0.0",
+    version="1.1.0",
     description="Automate aliyun ECS and EIP management",
     author="PIG208",
     author_email="p359101898@gmail.com",

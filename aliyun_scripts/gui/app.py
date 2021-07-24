@@ -1,10 +1,10 @@
 import tkinter as tk
+from argparse import ArgumentParser
 
 from aliyun_scripts.lib.actions import shutdown_ecs, start_ecs
-from aliyun_scripts.lib.utils import get_client_config_and_ecs
+from aliyun_scripts.lib.utils import get_client_config_and_ecs, update_config
 from aliyun_scripts.tools.eip_tool import (
     load_config_and_unbind_allocate_and_bind_new_eip,
-    release_eip,
     unbind_release,
 )
 
@@ -75,7 +75,21 @@ Status: {self.ecs.Status}
         self.update_text()
 
 
+def parse_args():
+    parser = ArgumentParser(description="Start aliyun script with GUI.")
+
+    parser.add_argument("--config", "-c")
+
+    parser.add_argument("--secrets", "-s")
+
+    return parser.parse_args()
+
+
 def main():
+    args = parse_args()
+
+    update_config(args.secrets, args.config)
+
     root = tk.Tk()
     app = Application(master=root)
     app.mainloop()

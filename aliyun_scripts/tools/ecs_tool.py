@@ -5,6 +5,7 @@ from aliyun_scripts.lib.instances import EcsStatus
 from aliyun_scripts.lib.utils import (
     get_client_config_and_ecs,
     get_print,
+    update_config,
     wait_ecs_status,
 )
 from aliyun_scripts.tools.eip_tool import (
@@ -28,6 +29,10 @@ def parse_args():
         "--verbose", "-v", action="store_true", help="Show verbose output"
     )
 
+    parser.add_argument("--config", "-c")
+
+    parser.add_argument("--secrets", "-a")
+
     parser.add_argument("--quiet", "-q", action="store_true", help="Disable output")
 
     return parser.parse_args()
@@ -36,6 +41,8 @@ def parse_args():
 def main():
     args = parse_args()
     _print = get_print(args.quiet)
+
+    update_config(args.secrets, args.config)
 
     client, _, ecs = get_client_config_and_ecs()
 

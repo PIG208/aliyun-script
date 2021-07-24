@@ -22,10 +22,12 @@ pip install -e git+https://github.com/PIG208/aliyun-script.git#egg=aliyun-script
 
 ### 使用方法
 
-由于暂时不支持指定配置文件路径，请在 secrets.json 和 config.json 的同一目录下执行脚本
+程序会默认读取用户目录下的配置文件 (即`~/config.json`和`~/secrets.json`)
+
+你也可以通过 `--config` 来指定 `config.json`, `--secrets` 来指定 `secrets.json`
 
 ```
-(aliyun) pig208@PIG:$ aliyun-ecs -s [指令|command]
+pig208@PIG:$ aliyun-ecs -s [指令|command]
 ```
 
 目前支持的指令如下:
@@ -39,12 +41,18 @@ pip install -e git+https://github.com/PIG208/aliyun-script.git#egg=aliyun-script
 效果:
 
 ```
-(aliyun) pig208@PIG:$ aliyun-ecs -s status
+pig208@PIG:$ aliyun-ecs -s status
 The status of i-asdasdasdasdasdasd (pig208-server) is:
 Running
-(aliyun) pig208@PIG:$ aliyun-ecs -s ip
+pig208@PIG:$ aliyun-ecs -s ip
 The ip of i-asdasdasdasdasdasd (pig208-server) is:
 47.123.123.123
+```
+
+你也可以使用图形界面:
+
+```
+pig208@PIG:$ aliyun-ui
 ```
 
 ## 配置
